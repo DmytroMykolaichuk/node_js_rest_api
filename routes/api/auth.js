@@ -7,15 +7,28 @@ const { authenticate, upload, validateBody } = require("../../middlewarpes");
 const schemas = require("../../schemas/user");
 
 router.post("/register", validateBody(schemas.registerSchema), ctrl.register);
+
+router.get("/users/verify/:verificationToken", ctrl.verifyEmail);
+
+router.post(
+  "/users/verify",
+  validateBody(schemas.emailSchema),
+  ctrl.resendVerifyEmail
+);
+
 router.post("/login", validateBody(schemas.loginSchema), ctrl.login);
+
 router.get("/users/current", authenticate, ctrl.getCurrent);
+
 router.post("/logout", authenticate, ctrl.logout);
+
 router.patch(
   "/users/",
   authenticate,
   validateBody(schemas.updateSubscriptionSchema),
   ctrl.updateStatusSubscription
 );
+
 router.patch(
   "/users/avatars",
   authenticate,
